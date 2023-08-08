@@ -2,35 +2,52 @@ import { Request, Response } from "express";
 import { userRepository } from "../repositories/userRepository";
 import { BadRequestError, UnauthorizedError } from "../helpers/api-erros";
 import bcrypt from 'bcrypt'
+import { roleRepository } from "../repositories/roleRepository";
 
 export class UserController {
     async create(req: Request, res: Response) {
-        const { name, email, password, telefone } = req.body
+        const { name, email, password, telefone, role_id } = req.body
 
         const userExists = await userRepository.findOneBy({ email })
+
+        const RoleExists = await roleRepository.findBy({ id: Number(role_id) })
+        // console.log(RoleExists)
 
         if (userExists) {
             throw new BadRequestError('E-mail já existe')
         }
+        if (!RoleExists) {
+            throw new BadRequestError('Role não existe')
+        }
 
         const hashPassword = await bcrypt.hash(password, 10)
 
-        const newUser = userRepository.create({
-            name,
-            email,
-            telefone,
-            password: hashPassword,
-        })
+        try {
 
-        await userRepository.save(newUser)
+            const newUser = userRepository.create({
+                name,
+                email,
+                telefone,
+                password: hashPassword,
+                roles: RoleExists
+            })
+            console.log(newUser)
+            await userRepository.save(newUser)
 
-        const { password: _, ...user } = newUser
+            const { password: _, ...user } = newUser
 
-        return res.status(201).json(user)
+            return res.status(201).json(user)
+        } catch (error: any) {
+            return res.status(400).json({ msg: error.message });
+        }
     }
 
     async index(req: Request, res: Response) {
-        const userExists = await userRepository.find()
+        const userExists = await userRepository.find({
+            relations: {
+                roles: true
+            }
+        })
 
         if (!userExists) {
             throw new UnauthorizedError('Sem usuários cadastrados')
