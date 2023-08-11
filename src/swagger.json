@@ -30,8 +30,8 @@
                             "examples": {
                                 "Login": {
                                     "value": {
-                                        "email": "Lucas@yahoo.com.br",
-                                        "password": "123"
+                                        "email": "BrunoGarcia@hotmail.com",
+                                        "password": "1345"
                                     }
                                 }
                             }
@@ -113,6 +113,11 @@
                 "tags": [
                     "usuario"
                 ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "responses": {
                     "responses": {
                         "401": {
@@ -142,6 +147,11 @@
                 "description": "Edit de usuários.",
                 "tags": [
                     "usuario"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
                 ],
                 "parameters": [
                     {
@@ -195,6 +205,11 @@
                 "tags": [
                     "usuario"
                 ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -230,6 +245,11 @@
                 "description": "Cadastro de roles.",
                 "tags": [
                     "Roles"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
                 ],
                 "requestBody": {
                     "content": {
@@ -273,6 +293,11 @@
                 "description": "Lista Roles",
                 "tags": [
                     "Roles"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
                 ],
                 "responses": {
                     "responses": {
